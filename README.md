@@ -1,2 +1,4 @@
-# game-maker
-Public utilities and content related to the GameMaker engine
+# GameMaker Info
+
+Repository of knowledge and data about the [GameMaker engine](https://gamemaker.io/).
+

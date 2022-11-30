@@ -1,0 +1,34 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "pipeline": {
+    "clean": {},
+    "build": {
+      "dependsOn": ["^build", "clean"],
+      "outputs": [
+        "dist/**",
+        "out/**",
+        "bundle/**",
+        "cdk.out/**",
+        "build/**",
+        "**/*.tsbuildinfo",
+        ".svelte-kit/**"
+      ]
+    },
+    "watch": {
+      "dependsOn": ["build"],
+      // Watchers are already watching the source, should only
+      // need to reboot the watcher if its configuration has changed.
+      // This will most likely happen in package.json
+      "inputs": ["package.json", "tsconfig.json", "*.config.*"],
+      "cache": false
+    },
+    "serve": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test": {
+      "dependsOn": ["build"],
+      "outputs": []
+    }
+  }
+}
