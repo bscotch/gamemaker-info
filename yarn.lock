@@ -32,6 +32,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@bscotch/gamemaker-feed@workspace:packages/feed":
+  version: 0.0.0-use.local
+  resolution: "@bscotch/gamemaker-feed@workspace:packages/feed"
+  languageName: unknown
+  linkType: soft
+
 "@bscotch/gamemaker-info@workspace:.":
   version: 0.0.0-use.local
   resolution: "@bscotch/gamemaker-info@workspace:."

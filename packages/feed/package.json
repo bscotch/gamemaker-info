@@ -1,0 +1,22 @@
+{
+  "name": "@bscotch/gamemaker-feed",
+  "version": "0.0.1",
+  "private": true,
+  "main": "dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "rimraf build dist *.tsbuildinfo **/*.tsbuildinfo",
+    "test": "mocha --config ../../config/.mocharc.cjs",
+    "test:dev": "mocha --config ../../config/.mocharc.cjs --forbid-only=false --parallel=false --timeout=9999999999",
+    "watch": "tsc --build --watch"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "packageManager": "yarn@3.2.4"
+}
