@@ -1,5 +1,5 @@
 {
-  "name": "@bscotch/gamemaker-feed",
+  "name": "@bscotch/gamemaker-releases",
   "version": "0.0.1",
   "private": true,
   "main": "dist/index.js",
