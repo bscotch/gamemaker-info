@@ -1,6 +1,8 @@
 import fetch from 'node-fetch';
 import { XMLParser } from 'fast-xml-parser';
 import { assert } from '@bscotch/utility/browser';
+import { decode } from 'html-entities';
+import { z } from 'zod';
 
 export type Validator<T> = { parse: (data: any) => T };
 
@@ -29,6 +31,27 @@ export function findMax<T>(
     }
   }
   return items[maxIdx];
+}
+
+export function htmlString() {
+  return z.string().transform((s) => {
+    if (!s || typeof s !== 'string') {
+      return s;
+    }
+    // decode HTML entities
+    s = decode(s.trim());
+    // remove anchor targets
+    s = s.replace(/\btarget=[^\s>]+/g, '');
+    // remove excess space
+    s = s.replace(/ +/g, ' ');
+    s = s.replace(/\r/g, '');
+    s = s.replace(/[\t ]*\n[\t ]*(\n[\t ]*)+/g, '\n\n');
+
+    if (s.startsWith('<p>')) {
+      console.log(JSON.stringify(s));
+    }
+    return s;
+  });
 }
 
 export function countNonUnique(arr: any[]): number {

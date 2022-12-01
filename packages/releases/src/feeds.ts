@@ -1,5 +1,6 @@
 import { Pathy } from '@bscotch/pathy';
 import { assert, literal } from '@bscotch/utility/browser';
+import { z } from 'zod';
 import { defaultNotesCachePath } from './constants.js';
 import { downloadRssFeed, findPairedRuntime } from './feeds.lib.js';
 import {
@@ -9,7 +10,9 @@ import {
   GameMakerArtifact,
   gameMakerArtifactSchema,
   GameMakerRelease,
+  gameMakerReleaseSchema,
   GameMakerReleaseWithNotes,
+  gameMakerReleaseWithNotesSchema,
 } from './feeds.types.js';
 import { listReleaseNotes } from './notes.js';
 
@@ -52,11 +55,13 @@ export async function listReleasesWithNotes(
     const runtime = { ...release.runtime, notes: runtimeNotes.changes };
     withNotes.push({
       channel: release.channel,
+      summary: release.summary,
+      publishedAt: release.publishedAt,
       ide,
       runtime,
     });
   }
-  return withNotes;
+  return z.array(gameMakerReleaseWithNotesSchema).parse(withNotes);
 }
 
 export async function listReleases(): Promise<GameMakerRelease[]> {
@@ -74,12 +79,14 @@ export async function listReleases(): Promise<GameMakerRelease[]> {
       continue;
     }
     releases.push({
+      channel: ide.channel,
+      summary: ide.summary!,
+      publishedAt: ide.publishedAt,
       ide,
       runtime: runtimeArtifacts[nextR],
-      channel: ide.channel,
     });
   }
-  return releases;
+  return z.array(gameMakerReleaseSchema).parse(releases);
 }
 
 async function listArtifacts(type: ArtifactType): Promise<GameMakerArtifact[]> {
@@ -96,10 +103,11 @@ async function listArtifacts(type: ArtifactType): Promise<GameMakerArtifact[]> {
         gameMakerArtifactSchema.parse({
           type,
           channel,
-          publishedAt: new Date(entry.pubDate),
+          publishedAt: entry.pubDate,
           version: entry.title.match(/^Version (.*)/)![1],
           link: entry.link,
           feedUrl: urls[channel],
+          summary: entry.description,
           notesUrl: entry.comments,
         }),
       );

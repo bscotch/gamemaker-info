@@ -1,10 +1,13 @@
 import { z } from 'zod';
+import { decode } from 'html-entities';
+import { htmlString } from './utils.js';
 
 export interface RssFeedEntry {
   title: string;
   pubDate: string;
   link?: string;
   comments: string;
+  description?: string;
 }
 
 export type Channel = typeof channels[number];
@@ -19,8 +22,8 @@ Object.freeze(artifactTypes);
 export const rssFeedSchema = z.object({
   rss: z.object({
     channel: z.object({
-      title: z.string(),
-      description: z.string(),
+      title: htmlString(),
+      description: htmlString(),
       link: z.string(),
       item: z.preprocess(
         (arg) => {
@@ -35,6 +38,7 @@ export const rssFeedSchema = z.object({
             pubDate: z.string(),
             link: z.string().optional(),
             comments: z.string(),
+            description: htmlString().optional(),
           }),
         ),
       ),
@@ -47,10 +51,9 @@ export const gameMakerArtifactSchema = z.object({
   type: z.enum(artifactTypes),
   version: z.string().regex(/^\d+\.\d+\.\d+\.\d+$/),
   channel: channelSchema,
+  summary: z.string().optional(),
   feedUrl: z.string(),
-  publishedAt: z.preprocess((arg) => {
-    return typeof arg == 'string' || arg instanceof Date ? new Date(arg) : arg;
-  }, z.date()),
+  publishedAt: z.string(),
   link: z.string().optional(),
   notesUrl: z.string(),
 });
@@ -63,27 +66,37 @@ export const gameMakerArtifactWithNotesSchema = gameMakerArtifactSchema.extend({
     since: z.string().nullable(),
     groups: z.array(
       z.object({
-        title: z.string(),
-        changes: z.array(z.string()),
+        title: htmlString(),
+        changes: z.array(htmlString()),
       }),
     ),
   }),
 });
 
+const gameMakerReleaseBaseSchema = z.object({
+  channel: channelSchema,
+  publishedAt: z.string().describe('Date of release for the IDE in this pair'),
+  summary: z
+    .string()
+    .transform((s) => {
+      return s ? decode(s).replace(/\btarget=[^\s>]+/, '') : s;
+    })
+    .describe('Summary of the release, from the RSS feed for the IDE'),
+});
+
 export type GameMakerReleaseWithNotes = z.infer<
   typeof gameMakerReleaseWithNotesSchema
 >;
-export const gameMakerReleaseWithNotesSchema = z.object({
-  channel: channelSchema,
-  ide: gameMakerArtifactWithNotesSchema,
-  runtime: gameMakerArtifactWithNotesSchema,
-});
+export const gameMakerReleaseWithNotesSchema =
+  gameMakerReleaseBaseSchema.extend({
+    ide: gameMakerArtifactWithNotesSchema.omit({ summary: true }),
+    runtime: gameMakerArtifactWithNotesSchema.omit({ summary: true }),
+  });
 
 export type GameMakerRelease = z.infer<typeof gameMakerReleaseSchema>;
-export const gameMakerReleaseSchema = z.object({
-  channel: channelSchema,
-  ide: gameMakerArtifactSchema,
-  runtime: gameMakerArtifactSchema,
+export const gameMakerReleaseSchema = gameMakerReleaseBaseSchema.extend({
+  ide: gameMakerArtifactSchema.omit({ summary: true }),
+  runtime: gameMakerArtifactSchema.omit({ summary: true }),
 });
 
 export type RawReleaseNote = z.infer<typeof rawReleaseNoteSchema>;

@@ -6,6 +6,14 @@ import {
 } from './feeds.types.js';
 import { fetchXml } from './utils.js';
 
+function daysApart(a: string, b: string) {
+  return dateDifferenceDays(new Date(a), new Date(b));
+}
+
+function absoluteDaysApart(a: string, b: string) {
+  return Math.abs(daysApart(a, b));
+}
+
 export function findPairedRuntime(
   runtimeFeed: GameMakerArtifact[],
   ide: GameMakerArtifact,
@@ -18,9 +26,7 @@ export function findPairedRuntime(
     if (!runtime.publishedAt || runtime.channel !== ide.channel) {
       continue;
     }
-    const diff = Math.abs(
-      dateDifferenceDays(runtime.publishedAt, ide.publishedAt),
-    );
+    const diff = absoluteDaysApart(runtime.publishedAt, ide.publishedAt);
     if (diff < dateDiff) {
       dateDiff = diff;
       searchIndex = r;
@@ -35,9 +41,7 @@ export function findPairedRuntime(
     if (!runtime.publishedAt || runtime.channel !== ide.channel) {
       continue;
     }
-    const diff = Math.abs(
-      dateDifferenceDays(runtime.publishedAt, ide.publishedAt),
-    );
+    const diff = absoluteDaysApart(runtime.publishedAt, ide.publishedAt);
     if (diff < dateDiff) {
       dateDiff = diff;
       searchIndex = r;
@@ -46,10 +50,7 @@ export function findPairedRuntime(
     }
   }
   const runtime = runtimeFeed[searchIndex];
-  if (
-    !runtime ||
-    Math.abs(dateDifferenceDays(runtime.publishedAt, ide.publishedAt)) > 1
-  ) {
+  if (!runtime || absoluteDaysApart(runtime.publishedAt, ide.publishedAt) > 1) {
     return -1;
   }
   return searchIndex;

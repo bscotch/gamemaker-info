@@ -72,6 +72,7 @@ __metadata:
     "@types/mocha": ^10.0.1
     chai: ^4.3.7
     fast-xml-parser: ^4.0.12
+    html-entities: ^2.3.3
     mocha: ^10.1.0
     node-fetch: ^3.3.0
     typescript: ^4.9.3
@@ -1983,6 +1984,13 @@ __metadata:
   bin:
     he: bin/he
   checksum: 3d4d6babccccd79c5c5a3f929a68af33360d6445587d628087f39a965079d84f18ce9c3d3f917ee1e3978916fc833bb8b29377c3b403f919426f91bc6965e7a7
+  languageName: node
+  linkType: hard
+
+"html-entities@npm:^2.3.3":
+  version: 2.3.3
+  resolution: "html-entities@npm:2.3.3"
+  checksum: 92521501da8aa5f66fee27f0f022d6e9ceae62667dae93aa6a2f636afa71ad530b7fb24a18d4d6c124c9885970cac5f8a52dbf1731741161002816ae43f98196
   languageName: node
   linkType: hard
 
