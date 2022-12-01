@@ -22,8 +22,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Store Latest Summary Checksum
         run: echo "OLD_SUMMARY_CHECKSUM=${{hashFiles('packages/releases/releases-summary.json')}}" >> $GITHUB_ENV
-      - name: Build And Test
-        run: yarn turbo run build test --only --filter=gamemaker-releases...
+      - name: Build
+        run: yarn turbo run build --only --filter=gamemaker-releases...
       - name: Compute New Summary
         run: echo "LATEST_RELEASE=$(scripts/update-releases-summary.mjs)" >> $GITHUB_ENV
       - name: Store New Summary Checksum
