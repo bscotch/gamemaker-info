@@ -1,7 +1,5 @@
-import { assert, literal } from '@bscotch/utility/browser';
-import { default as axios } from 'axios';
-import { XMLParser } from 'fast-xml-parser';
-import { findPairedRuntime } from './feeds.lib.js';
+import { literal } from '@bscotch/utility/browser';
+import { downloadRssFeed, findPairedRuntime } from './feeds.lib.js';
 import {
   ArtifactType,
   Channel,
@@ -9,13 +7,7 @@ import {
   GameMakerArtifact,
   gameMakerArtifactSchema,
   GameMakerRelease,
-  rawReleaseNotesCacheSchema,
-  rawReleaseNoteSchema,
-  RssFeedEntry,
-  rssFeedSchema,
 } from './feeds.types.js';
-import { defaultCacheDir } from './constants.js';
-import { Pathy } from '@bscotch/pathy';
 
 export function ideFeedUrls() {
   const prefix = `https://gms.yoyogames.com/update-win`;
@@ -35,34 +27,6 @@ export function runtimeFeedUrls() {
     beta: `${prefix}-NuBeta.rss`,
     unstable: `${prefix}-NuBeta-I.rss`,
   }) satisfies { [c in Channel]: string };
-}
-
-export async function listReleaseNotes(
-  releases: GameMakerRelease[],
-  cache: Pathy | string = defaultCacheDir.join('notes-cache.json'),
-) {
-  const cachePath = Pathy.asInstance(cache).withValidator(
-    rawReleaseNotesCacheSchema,
-  );
-  assert(
-    cachePath.hasExtension('json'),
-    `Cache path must have a .json extension`,
-  );
-  const cacheData = await cachePath.read({ fallback: {} });
-  const failures: string[] = [];
-  for (const release of releases) {
-    if (cacheData[release.notesUrl]) {
-      continue;
-    }
-    const res = await axios(release.notesUrl);
-    try {
-      cacheData[release.notesUrl] = rawReleaseNoteSchema.parse(res.data);
-      await cachePath.write(cacheData);
-    } catch (err) {
-      failures.push(`${release.type} ${release.channel} ${release.notesUrl}`);
-    }
-  }
-  console.log(failures);
 }
 
 export async function listReleases(): Promise<GameMakerRelease[]> {
@@ -111,13 +75,4 @@ async function listArtifacts(type: ArtifactType): Promise<GameMakerArtifact[]> {
     }
   }
   return entries;
-}
-
-async function downloadRssFeed(url: string): Promise<RssFeedEntry[]> {
-  const data = (await axios(url)).data as string;
-  assert(data, `Got no data back from ${url}`);
-  // Try to parse the data before saving it to make sure we aren't
-  // saving nonsense garbage.
-  const asJson = new XMLParser().parse(data);
-  return rssFeedSchema.parse(asJson).rss.channel.item;
 }

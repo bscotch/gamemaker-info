@@ -1,5 +1,10 @@
 import { dateDifferenceDays } from '@bscotch/utility/browser';
-import { type GameMakerArtifact } from './feeds.types.js';
+import {
+  RssFeedEntry,
+  rssFeedSchema,
+  type GameMakerArtifact,
+} from './feeds.types.js';
+import { fetchXml } from './utils.js';
 
 export function findPairedRuntime(
   runtimeFeed: GameMakerArtifact[],
@@ -48,4 +53,9 @@ export function findPairedRuntime(
     return -1;
   }
   return searchIndex;
+}
+
+export async function downloadRssFeed(url: string): Promise<RssFeedEntry[]> {
+  const feed = await fetchXml(url, rssFeedSchema);
+  return feed.rss.channel.item;
 }

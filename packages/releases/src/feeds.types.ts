@@ -60,6 +60,7 @@ export const gameMakerReleaseSchema = gameMakerArtifactSchema.extend({
   runtime: gameMakerArtifactSchema,
 });
 
+export type RawReleaseNote = z.infer<typeof rawReleaseNoteSchema>;
 export const rawReleaseNoteSchema = z
   .object({
     version: z.string(),
@@ -67,4 +68,5 @@ export const rawReleaseNoteSchema = z
   })
   .strict();
 
+export type RawReleaseNotesCache = Record<string, RawReleaseNote>;
 export const rawReleaseNotesCacheSchema = z.record(rawReleaseNoteSchema);
