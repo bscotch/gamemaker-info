@@ -27,7 +27,7 @@ jobs:
       - name: Store New Summary Checksum
         run: echo "NEW_SUMMARY_CHECKSUM=${{hashFiles('packages/releases/releases-summary.json')}}" >> $GITHUB_ENV
       - name: Create New Release
-        if: ${{env.OLD_SUMMARY_CHECKSUM != NEW_SUMMARY_CHECKSUM}}
+        if: ${{env.OLD_SUMMARY_CHECKSUM != env.NEW_SUMMARY_CHECKSUM}}
         run: gh release create --title "GameMaker Releases Summary v${{env.LATEST_RELEASE}}" releases-summary@${{env.LATEST_RELEASE}} packages/releases/releases-summary.json#GameMakerReleases packages/releases/release-notes-cache.json#NotesCache
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
