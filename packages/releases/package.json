@@ -1,7 +1,31 @@
 {
   "name": "@bscotch/gamemaker-releases",
+  "description": "Utility for combining GameMaker release data into a single feed.",
   "version": "0.0.1",
-  "private": true,
+  "author": "Butterscotch Shenanigans",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bscotch/gamemaker-info.git",
+    "directory": "packages/releases"
+  },
+  "license": "MIT",
+  "keywords": [
+    "gamemaker",
+    "game-maker",
+    "release",
+    "release-notes",
+    "patchnotes",
+    "patch-notes",
+    "changelog",
+    "yoyo",
+    "bscotch",
+    "stitch",
+    "rss",
+    "feed"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/index.js",
   "exports": {
     ".": {

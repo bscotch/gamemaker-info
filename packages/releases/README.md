@@ -8,10 +8,14 @@ This package centralizes all of the official GameMaker information (for Windows 
 
 + [Node.js 16+](https://nodejs.org)
 
+## Installation
+
+`npm install @bscotch/gamemaker-releases`
+
 ## Usage
 
 ```ts
-import { listReleasesWithNotes } from './dist/index.js';
+import { listReleasesWithNotes } from '@bscotch/gamemaker-releases';
 
 // Get info for all releases, including IDE and Runtime, across
 // all channels, with release notes.
