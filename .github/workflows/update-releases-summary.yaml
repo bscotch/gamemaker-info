@@ -13,6 +13,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+      - run: corepack enable
       - run: yarn install
       - name: Download Latest Summary
         run: gh release download --pattern packages/releases/release*.json --clobber
