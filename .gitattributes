@@ -1,1 +1,1 @@
-packages/releases/notes-cache.json filter=lfs diff=lfs merge=lfs -text
+packages/releases/release-notes-cache.json filter=lfs diff=lfs merge=lfs -text

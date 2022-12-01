@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { listReleases, listReleasesWithNotes } from './feeds.js';
 import { rawReleaseNotesCacheSchema } from './feeds.types.js';
 
-const notesCache = pathy('notes-cache.json').withValidator(
+const notesCache = pathy('release-notes-cache.json').withValidator(
   rawReleaseNotesCacheSchema,
 );
 

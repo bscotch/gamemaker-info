@@ -6,10 +6,10 @@ export {
   runtimeFeedUrls,
   listReleases,
   listReleasesWithNotes,
-} from 'feeds.js';
+} from './feeds.js';
 export type {
   ArtifactType,
   Channel,
   GameMakerRelease,
   GameMakerReleaseWithNotes,
-} from 'feeds.types.js';
+} from './feeds.types.js';

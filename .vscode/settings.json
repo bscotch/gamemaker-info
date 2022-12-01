@@ -20,7 +20,8 @@
     "**/node_modules": true,
     "**/dist": true,
     "**/.svelte-kit": true,
-    "**/build": true
+    "**/build": true,
+    ".yarn/plugins/**": true
   },
   "explorer.fileNesting.patterns": {
     "*.js": "$(capture).*",

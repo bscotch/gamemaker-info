@@ -61,6 +61,10 @@ export async function listReleasesWithNotes(
       runtime,
     });
   }
+  withNotes.sort(
+    (a, b) =>
+      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
+  );
   return z.array(gameMakerReleaseWithNotesSchema).parse(withNotes);
 }
 
@@ -86,6 +90,10 @@ export async function listReleases(): Promise<GameMakerRelease[]> {
       runtime: runtimeArtifacts[nextR],
     });
   }
+  releases.sort(
+    (a, b) =>
+      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
+  );
   return z.array(gameMakerReleaseSchema).parse(releases);
 }
 
@@ -113,5 +121,9 @@ async function listArtifacts(type: ArtifactType): Promise<GameMakerArtifact[]> {
       );
     }
   }
+  entries.sort(
+    (a, b) =>
+      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
+  );
   return entries;
 }

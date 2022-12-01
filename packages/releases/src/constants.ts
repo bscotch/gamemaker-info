@@ -6,4 +6,6 @@ export const defaultCacheDir = pathy(
   '@bscotch/gamemaker-releases',
 );
 
-export const defaultNotesCachePath = defaultCacheDir.join('notes-cache.json');
+export const defaultNotesCachePath = defaultCacheDir.join(
+  'release-notes-cache.json',
+);

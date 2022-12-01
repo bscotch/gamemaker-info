@@ -46,10 +46,6 @@ export function htmlString() {
     s = s.replace(/ +/g, ' ');
     s = s.replace(/\r/g, '');
     s = s.replace(/[\t ]*\n[\t ]*(\n[\t ]*)+/g, '\n\n');
-
-    if (s.startsWith('<p>')) {
-      console.log(JSON.stringify(s));
-    }
     return s;
   });
 }

@@ -4,8 +4,8 @@
   "type": "module",
   "scripts": {
     "build:all": "turbo run build --force",
-    "clean:artifacts": "rm -rf */*/dist */*/build **/.turbo **/*.tsbuildinfo **/package-lock.json",
-    "clean:deps": "rm -rf node_modules **/node_modules",
+    "clean:artifacts": "rimraf -rf */*/dist */*/build **/.turbo **/*.tsbuildinfo **/package-lock.json",
+    "clean:deps": "rimraf -rf node_modules **/node_modules",
     "fix:deps": "syncpack fix-mismatches && treb fix --allProjects --packageJson",
     "postinstall": "husky install config/husky",
     "test": "turbo run test",
@@ -28,6 +28,8 @@
     "tslib": "^2.4.1"
   },
   "devDependencies": {
+    "@bscotch/pathy": "^2.5.1",
+    "@bscotch/utility": "^6.7.0",
     "@types/chai": "^4.3.4",
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.11.9",

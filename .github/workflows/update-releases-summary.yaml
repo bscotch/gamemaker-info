@@ -1,0 +1,34 @@
+
+name: Update GameMaker Releases Summary
+on: [push, repository_dispatch]
+permissions:
+  contents: write
+
+jobs:
+  update:
+    name: Update Summary
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: yarn install
+      - name: Download Latest Summary
+        run: gh release download --pattern packages/releases/release*.json --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Store Latest Summary Checksum
+        run: echo "OLD_SUMMARY_CHECKSUM=${{hashFiles(packages/releases/releases-summary.json)}}" >> $GITHUB_ENV
+      - name: Build And Test
+        run: yarn turbo run build test --only --filter=gamemaker-releases...
+      - name: Compute New Summary
+        run: echo "LATEST_RELEASE=$(scripts/update-releases-summary.mjs)" >> $GITHUB_ENV
+      - name: Store New Summary Checksum
+        run: echo "NEW_SUMMARY_CHECKSUM=${{hashFiles(packages/releases/releases-summary.json)}}" >> $GITHUB_ENV
+      - name: Create New Release
+        if: ${{env.OLD_SUMMARY_CHECKSUM != NEW_SUMMARY_CHECKSUM}}
+        run: gh release create --title "GameMaker Releases Summary v${{env.LATEST_RELEASE}}" releases-summary@${{env.LATEST_RELEASE}} packages/releases/releases-summary.json#GameMakerReleases packages/releases/release-notes-cache.json#NotesCache
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
