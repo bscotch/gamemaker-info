@@ -58,6 +58,9 @@ testem.log
 /typings
 *.tsbuildinfo
 .pnpm-debug.log
+*.tmp
+*.tmp.*
+
 
 # System Files
 .DS_Store
