@@ -56,8 +56,10 @@ export const gameMakerArtifactSchema = z.object({
 });
 
 export type GameMakerRelease = z.infer<typeof gameMakerReleaseSchema>;
-export const gameMakerReleaseSchema = gameMakerArtifactSchema.extend({
+export const gameMakerReleaseSchema = z.object({
+  ide: gameMakerArtifactSchema,
   runtime: gameMakerArtifactSchema,
+  channel: channelSchema,
 });
 
 export type RawReleaseNote = z.infer<typeof rawReleaseNoteSchema>;

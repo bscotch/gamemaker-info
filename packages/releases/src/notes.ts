@@ -1,4 +1,4 @@
-import { pathy, Pathy } from '@bscotch/pathy';
+import { Pathy } from '@bscotch/pathy';
 import { assert } from '@bscotch/utility/browser';
 import { defaultCacheDir } from './constants.js';
 import {
@@ -7,7 +7,7 @@ import {
   rawReleaseNotesCacheSchema,
   rawReleaseNoteSchema,
 } from './feeds.types.js';
-import { countNonUnique, fetchJson } from './utils.js';
+import { countNonUnique, fetchJson, findMax } from './utils.js';
 
 export async function listReleaseNotes(
   releases: GameMakerRelease[],
@@ -22,13 +22,18 @@ export async function listReleaseNotes(
   );
   const cacheData = await cachePath.read({ fallback: {} });
   for (const release of releases) {
-    if (cacheData[release.notesUrl]) {
-      continue;
+    for (const type of ['ide', 'runtime'] as const) {
+      if (cacheData[release[type].notesUrl]) {
+        continue;
+      }
+      console.info('Notes cache miss:', release[type].notesUrl);
+      const note = await fetchJson(
+        release[type].notesUrl,
+        rawReleaseNoteSchema,
+      );
+      cacheData[release[type].notesUrl] = rawReleaseNoteSchema.parse(note);
+      await cachePath.write(cacheData);
     }
-    console.info('Notes cache miss:', release.notesUrl);
-    const note = await fetchJson(release.notesUrl, rawReleaseNoteSchema);
-    cacheData[release.notesUrl] = rawReleaseNoteSchema.parse(note);
-    await cachePath.write(cacheData);
   }
   return cacheData;
 }
@@ -65,27 +70,23 @@ export async function cleanNotes(cachedNotes: RawReleaseNotesCache) {
       continue;
     }
     // Score matches by digits in common
-    let maxScore = 0;
-    let maxScoreIndex = 0;
     const versionParts = note.version.split('.');
-    for (let i = 0; i < possibleMatches.length; i++) {
-      const matchParts = possibleMatches[i].split('.');
+    note.changes.since = findMax(possibleMatches, (possibleMatch) => {
+      const matchParts = possibleMatch.split('.');
       let score = 0;
       for (let j = 0; j < matchParts.length; j++) {
-        if (matchParts[j] === versionParts[j]) {
-          score++;
-        }
+        score += matchParts[j] === versionParts[j] ? 1 : 0;
       }
-      if (score > maxScore) {
-        maxScore = score;
-        maxScoreIndex = i;
-      }
-    }
-    note.changes.since = possibleMatches[maxScoreIndex];
-    console.log('MATCHED', note.version, note.changes.since);
+      return score;
+    });
   }
-  await pathy('notes.json').write(cleanedNotes);
-  return cleanedNotes;
+  // Re-organize into a map for indexing by notes-URL, so that these can be merged
+  // into the release feed data.
+  const notesByUrl = cleanedNotes.reduce((acc, note) => {
+    acc[note.url] = note;
+    return acc;
+  }, {} as Record<string, typeof cleanedNotes[0]>);
+  return notesByUrl;
 }
 
 function cleanNote(note: {

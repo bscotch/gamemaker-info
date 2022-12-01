@@ -8,7 +8,7 @@ const notesCache = pathy('notes-cache.json').withValidator(
 );
 
 describe('Release Feeds', function () {
-  xit('can create a centralized GameMaker Releases database', async function () {
+  it('can create a centralized GameMaker Releases database', async function () {
     const releases = await listReleases();
     const notes = await listReleaseNotes(releases, notesCache);
   });

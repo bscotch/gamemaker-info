@@ -44,8 +44,9 @@ export async function listReleases(): Promise<GameMakerRelease[]> {
       continue;
     }
     releases.push({
-      ...ide,
+      ide,
       runtime: runtimeArtifacts[nextR],
+      channel: ide.channel,
     });
   }
   return releases;
