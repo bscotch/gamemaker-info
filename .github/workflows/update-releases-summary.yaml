@@ -16,6 +16,7 @@ jobs:
       - run: corepack enable
       - run: yarn install
       - name: Download Latest Summary
+        continue-on-error: true
         run: gh release download --pattern packages/releases/release*.json --clobber
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
