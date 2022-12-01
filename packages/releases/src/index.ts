@@ -7,25 +7,15 @@
 // 6. Add ability to upload the merged release to R2
 // 7. Add a GitHub action to run this on a schedule, remotely
 
-import { pathy } from '@bscotch/pathy';
-import { defaultCacheDir } from './constants.js';
-import { listReleases } from './feeds.js';
-
-export interface CreateKnowledgeBaseOptions {
-  /**
-   * Directory to store cached data, for reducing network requests.
-   *
-   * @default `${os.tmpdir()}/@bscotch/gamemaker-releases`
-   */
-  cacheDir?: string;
-}
-
-export async function createKnowledgeBase(
-  options?: CreateKnowledgeBaseOptions,
-) {
-  const cacheDir = options?.cacheDir
-    ? pathy(options.cacheDir)
-    : defaultCacheDir;
-
-  const releases = await listReleases();
-}
+export {
+  ideFeedUrls,
+  runtimeFeedUrls,
+  listReleases,
+  listReleasesWithNotes,
+} from 'feeds.js';
+export type {
+  ArtifactType,
+  Channel,
+  GameMakerRelease,
+  GameMakerReleaseWithNotes,
+} from 'feeds.types.js';

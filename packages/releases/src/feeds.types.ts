@@ -55,16 +55,41 @@ export const gameMakerArtifactSchema = z.object({
   notesUrl: z.string(),
 });
 
+export type GameMakerArtifactWithNotes = z.infer<
+  typeof gameMakerArtifactWithNotesSchema
+>;
+export const gameMakerArtifactWithNotesSchema = gameMakerArtifactSchema.extend({
+  notes: z.object({
+    since: z.string().nullable(),
+    groups: z.array(
+      z.object({
+        title: z.string(),
+        changes: z.array(z.string()),
+      }),
+    ),
+  }),
+});
+
+export type GameMakerReleaseWithNotes = z.infer<
+  typeof gameMakerReleaseWithNotesSchema
+>;
+export const gameMakerReleaseWithNotesSchema = z.object({
+  channel: channelSchema,
+  ide: gameMakerArtifactWithNotesSchema,
+  runtime: gameMakerArtifactWithNotesSchema,
+});
+
 export type GameMakerRelease = z.infer<typeof gameMakerReleaseSchema>;
 export const gameMakerReleaseSchema = z.object({
+  channel: channelSchema,
   ide: gameMakerArtifactSchema,
   runtime: gameMakerArtifactSchema,
-  channel: channelSchema,
 });
 
 export type RawReleaseNote = z.infer<typeof rawReleaseNoteSchema>;
 export const rawReleaseNoteSchema = z
   .object({
+    type: z.enum(artifactTypes).optional(),
     version: z.string(),
     release_notes: z.array(z.string()),
   })

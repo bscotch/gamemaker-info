@@ -1,4 +1,6 @@
-import { literal } from '@bscotch/utility/browser';
+import { Pathy } from '@bscotch/pathy';
+import { assert, literal } from '@bscotch/utility/browser';
+import { defaultNotesCachePath } from './constants.js';
 import { downloadRssFeed, findPairedRuntime } from './feeds.lib.js';
 import {
   ArtifactType,
@@ -7,7 +9,9 @@ import {
   GameMakerArtifact,
   gameMakerArtifactSchema,
   GameMakerRelease,
+  GameMakerReleaseWithNotes,
 } from './feeds.types.js';
+import { listReleaseNotes } from './notes.js';
 
 export function ideFeedUrls() {
   const prefix = `https://gms.yoyogames.com/update-win`;
@@ -27,6 +31,32 @@ export function runtimeFeedUrls() {
     beta: `${prefix}-NuBeta.rss`,
     unstable: `${prefix}-NuBeta-I.rss`,
   }) satisfies { [c in Channel]: string };
+}
+
+export async function listReleasesWithNotes(
+  releases?: GameMakerRelease[],
+  cache: Pathy | string = defaultNotesCachePath,
+): Promise<GameMakerReleaseWithNotes[]> {
+  releases ||= await listReleases();
+  const notes = await listReleaseNotes(releases, cache);
+  const withNotes: GameMakerReleaseWithNotes[] = [];
+  for (const release of releases) {
+    const ideNotes = notes[release.ide.notesUrl];
+    assert(ideNotes, `No notes found for IDE release ${release.ide.version}`);
+    const runtimeNotes = notes[release.runtime.notesUrl];
+    assert(
+      runtimeNotes,
+      `No notes found for IDE release ${release.runtime.version}`,
+    );
+    const ide = { ...release.ide, notes: ideNotes.changes };
+    const runtime = { ...release.runtime, notes: runtimeNotes.changes };
+    withNotes.push({
+      channel: release.channel,
+      ide,
+      runtime,
+    });
+  }
+  return withNotes;
 }
 
 export async function listReleases(): Promise<GameMakerRelease[]> {

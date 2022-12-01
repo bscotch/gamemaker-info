@@ -2,15 +2,31 @@
 
 [GameMaker](https://gamemaker.io/) releases new builds fairly frequently across several release channels (e.g. beta, stable, and LTS). Each release includes two separate artifacts: an IDE installer and a Runtime. Release notes are listed separately for each artifact type and release channel.
 
-This package centralizes all of the official GameMaker information into a single structured document.
+This package centralizes all of the official GameMaker information (for Windows versions) into a single structured document.
 
-## Artifacts
+## Requirements
+
++ [Node.js 16+](https://nodejs.org)
+
+## Usage
+
+```ts
+import { listReleasesWithNotes } from './dist/index.js';
+
+// Get info for all releases, including IDE and Runtime, across
+// all channels, with release notes.
+const releases = await listReleasesWithNotes();
+```
+
+## Background Info
+
+### Artifacts
 
 GameMaker releases are made up of a pair of artifacts: an IDE and a Runtime. While each IDE has a "matching" Runtime, you can specify any Runtime you want for the active IDE (though not all will work with any given IDE version).
 
 The IDE artifacts are installed via an installer, while Runtimes are installed via the GameMaker IDE or via other installed Runtimes. In other words, you cannot manually install Runtimes.
 
-## Release Channels
+### Release Channels
 
 GameMaker artifacts are released into one or more of several channels. Each channel has a separate RSS feed describing the GameMaker versions available in that channel.
 
@@ -19,20 +35,20 @@ GameMaker artifacts are released into one or more of several channels. Each chan
 - **Beta** Releases intended for games in early stages of production, where new and relatively-untested features are delivered rapidly. The schedule is roughly weekly.
 - **Dev (Unstable)** Releases intended for internal use or rapid delivery of new features. Not recommended.
 
-## Release Feeds
+### Release Feeds
 
 GameMaker releases are described by RSS feeds and JSON files whose URLs are listed inside those feeds. These RSS feeds are the same ones used by the GameMaker IDE to determine when new IDE and Runtime artifacts have become available.
 
 There are distinct feeds for each platform supported by the GameMaker IDE, for each release channel. The IDE and Runtime have separate feeds.
 
-### IDE Feeds (Windows)
+#### IDE Feeds (Windows)
 
 - `lts`: https://gms.yoyogames.com/update-win-LTS.rss
 - `stable`: https://gms.yoyogames.com/update-win.rss
 - `beta`: https://gms.yoyogames.com/update-win-NuBeta.rss
 - `unstable`: https://gms.yoyogames.com/update-win-NuBeta-I.rss
 
-### Runtime Feeds (Windows)
+#### Runtime Feeds (Windows)
 
 - `lts`: https://gms.yoyogames.com/Zeus-Runtime-LTS.rss
 - `stable`: https://gms.yoyogames.com/Zeus-Runtime.rss

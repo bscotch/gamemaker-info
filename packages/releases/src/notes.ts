@@ -1,7 +1,8 @@
 import { Pathy } from '@bscotch/pathy';
 import { assert } from '@bscotch/utility/browser';
-import { defaultCacheDir } from './constants.js';
+import { defaultNotesCachePath } from './constants.js';
 import {
+  ArtifactType,
   GameMakerRelease,
   RawReleaseNotesCache,
   rawReleaseNotesCacheSchema,
@@ -11,8 +12,8 @@ import { countNonUnique, fetchJson, findMax } from './utils.js';
 
 export async function listReleaseNotes(
   releases: GameMakerRelease[],
-  cache: Pathy | string = defaultCacheDir.join('notes-cache.json'),
-): Promise<RawReleaseNotesCache> {
+  cache: Pathy | string = defaultNotesCachePath,
+) {
   const cachePath = Pathy.asInstance(cache).withValidator(
     rawReleaseNotesCacheSchema,
   );
@@ -23,29 +24,34 @@ export async function listReleaseNotes(
   const cacheData = await cachePath.read({ fallback: {} });
   for (const release of releases) {
     for (const type of ['ide', 'runtime'] as const) {
-      if (cacheData[release[type].notesUrl]) {
+      const url = release[type].notesUrl;
+      if (cacheData[url]) {
+        if (!cacheData[url].type) {
+          cacheData[url].type = type;
+          await cachePath.write(cacheData);
+        }
         continue;
       }
-      console.info('Notes cache miss:', release[type].notesUrl);
-      const note = await fetchJson(
-        release[type].notesUrl,
-        rawReleaseNoteSchema,
-      );
-      cacheData[release[type].notesUrl] = rawReleaseNoteSchema.parse(note);
+      console.info('Notes cache miss:', url);
+      const note = await fetchJson(url, rawReleaseNoteSchema);
+      cacheData[url] = {
+        type,
+        ...rawReleaseNoteSchema.parse(note),
+      };
       await cachePath.write(cacheData);
     }
   }
-  return cacheData;
+  return cleanNotes(cacheData);
 }
 
-export async function cleanNotes(cachedNotes: RawReleaseNotesCache) {
+function cleanNotes(cachedNotes: RawReleaseNotesCache) {
   const rawNotes = Object.entries(cachedNotes).map(([url, note]) => ({
     ...note,
     url,
   }));
   // As of writing, all versions from downloaded notes are unique.
   // We'll assume that moving forward, but also throw if that assumption is broken.
-  const versions = rawNotes.map((note) => note.version);
+  const versions = rawNotes.map((note) => `${note.version} (${note.type})`);
   assert(
     countNonUnique(versions) === 0,
     `Duplicate versions found in release notes`,
@@ -90,10 +96,12 @@ export async function cleanNotes(cachedNotes: RawReleaseNotesCache) {
 }
 
 function cleanNote(note: {
+  type?: ArtifactType;
   version: string;
   url: string;
   release_notes: string[];
 }) {
+  assert(note.type, 'Note type must be set');
   const { body, title } = parseHeader(note.release_notes.join(''));
   const groups = parseBody(body);
   const sinceVersion = relativeToVersion(title);
@@ -103,6 +111,7 @@ function cleanNote(note: {
     version: note.version,
     url: note.url,
     title,
+    type: note.type,
     changes: {
       since: sinceVersion,
       groups,

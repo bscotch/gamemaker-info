@@ -1,7 +1,7 @@
 import { pathy } from '@bscotch/pathy';
-import { listReleases } from './feeds.js';
+import { expect } from 'chai';
+import { listReleases, listReleasesWithNotes } from './feeds.js';
 import { rawReleaseNotesCacheSchema } from './feeds.types.js';
-import { listReleaseNotes, cleanNotes } from './notes.js';
 
 const notesCache = pathy('notes-cache.json').withValidator(
   rawReleaseNotesCacheSchema,
@@ -10,11 +10,14 @@ const notesCache = pathy('notes-cache.json').withValidator(
 describe('Release Feeds', function () {
   it('can create a centralized GameMaker Releases database', async function () {
     const releases = await listReleases();
-    const notes = await listReleaseNotes(releases, notesCache);
-  });
-
-  it('can clean release notes', async function () {
-    const notes = await notesCache.read();
-    const cleaned = await cleanNotes(notes);
+    const withNotes = await listReleasesWithNotes(releases, notesCache);
+    expect(withNotes.length).to.be.greaterThan(0);
+    expect(withNotes.every((r) => r.channel)).to.exist;
+    for (const type of ['ide', 'runtime'] as const) {
+      expect(withNotes.every((r) => r[type])).to.exist;
+      expect(withNotes.every((r) => r[type].version)).to.exist;
+      expect(withNotes.every((r) => r[type].notes)).to.exist;
+      expect(withNotes.every((r) => r[type].notes.groups)).to.exist;
+    }
   });
 });

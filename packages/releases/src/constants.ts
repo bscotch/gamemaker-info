@@ -5,3 +5,5 @@ export const defaultCacheDir = pathy(
   os.tmpdir(),
   '@bscotch/gamemaker-releases',
 );
+
+export const defaultNotesCachePath = defaultCacheDir.join('notes-cache.json');
