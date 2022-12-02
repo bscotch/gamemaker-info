@@ -1,5 +1,5 @@
 {
-  "name": "@bscotch/gamemaker-info",
+  "name": "root",
   "private": true,
   "type": "module",
   "scripts": {
