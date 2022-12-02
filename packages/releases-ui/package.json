@@ -1,0 +1,26 @@
+{
+  "name": "@bscotch/gamemaker-releases-ui",
+  "description": "An unofficial Svelte UI displaying interactive GameMaker release change logs.",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "svelte-kit sync && vite dev",
+    "build": "svelte-kit sync && svelte-package",
+    "prepublishOnly": "echo 'Did you mean to publish `./package/`, instead of `./`?' && exit 1",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+  },
+  "devDependencies": {
+    "@bscotch/gamemaker-releases": "workspace:^",
+    "@sveltejs/adapter-auto": "next",
+    "@sveltejs/kit": "next",
+    "@sveltejs/package": "next",
+    "svelte": "^3.53.1",
+    "svelte-check": "^2.10.0",
+    "svelte-preprocess": "^4.10.7",
+    "tslib": "^2.4.1",
+    "typescript": "^4.9.3",
+    "vite": "^3.2.4"
+  },
+  "type": "module"
+}
