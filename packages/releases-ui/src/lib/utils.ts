@@ -17,9 +17,13 @@ export function toDateLocal(date: string | Date) {
   return new Date(date).toLocaleDateString();
 }
 
+export interface SearchOptions {
+  caseSensitive?: boolean;
+}
+
 export function createSearchIndex(
   withinReleases: GameMakerReleaseWithNotes[],
-  options?: { caseSensitive?: boolean },
+  options?: SearchOptions,
 ) {
   return new Fuse(withinReleases, {
     keys: [
@@ -43,5 +47,6 @@ export function createSearchIndex(
     includeMatches: true,
     minMatchCharLength: 3,
     isCaseSensitive: options?.caseSensitive ?? false,
+    useExtendedSearch: true,
   });
 }

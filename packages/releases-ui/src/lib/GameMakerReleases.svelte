@@ -8,6 +8,7 @@
     debounce,
     toDateIso,
     toDateLocal,
+    type SearchOptions,
   } from './utils.js';
 
   export let showChannels: Channel[] = ['lts', 'stable'];
@@ -16,29 +17,36 @@
   let showingReleases: GameMakerReleaseWithNotes[] = [];
   let searchQuery = '';
   let searchIndex: Fuse<GameMakerReleaseWithNotes> | undefined;
+  let searchOptions: SearchOptions = {
+    caseSensitive: false,
+  };
 
-  function updateShowingChannels() {
+  function updateSearchIndex() {
     showingReleases = releases.filter((release) =>
       showChannels.includes(release.channel),
     );
     searchIndex = createSearchIndex(showingReleases);
+    if (searchQuery) {
+      filterBySearch();
+    }
   }
 
   function filterBySearch() {
     if (searchQuery) {
-      const index = searchIndex || createSearchIndex(showingReleases);
+      const index =
+        searchIndex || createSearchIndex(showingReleases, searchOptions);
       const searchResults = index.search(searchQuery);
       console.log(searchResults);
       showingReleases = searchResults.map((result) => result.item);
     } else {
-      updateShowingChannels();
+      updateSearchIndex();
     }
     return showingReleases;
   }
 
   const debouncedSearch = debounce(filterBySearch, 200);
 
-  updateShowingChannels();
+  updateSearchIndex();
 </script>
 
 <section id="gamemaker-releases-component">
@@ -52,23 +60,39 @@
       on:keyup={() => debouncedSearch()}
       on:change={() => debouncedSearch()}
     />
-    {#each channels as channel}
-      <label data-channel={channel}>
+    <fieldset>
+      <legend class="sr-only"> Search options </legend>
+      <label>
         <input
           type="checkbox"
-          bind:group={showChannels}
-          value={channel}
+          bind:value={searchOptions.caseSensitive}
           on:change={() => {
-            updateShowingChannels();
+            updateSearchIndex();
           }}
         />
-        {channel}
+        match case
       </label>
-    {/each}
+    </fieldset>
+    <fieldset>
+      <legend class="sr-only"> Select which channels to display </legend>
+      {#each channels as channel}
+        <label data-channel={channel}>
+          <input
+            type="checkbox"
+            bind:group={showChannels}
+            value={channel}
+            on:change={() => {
+              updateSearchIndex();
+            }}
+          />
+          {channel}
+        </label>
+      {/each}
+    </fieldset>
   </form>
 
   {#each showingReleases as release}
-    <article data-channel={release.channel}>
+    <article data-version={release.ide.version} data-channel={release.channel}>
       <header id={`release-${release.ide.version}`}>
         <h2>{release.ide.version}</h2>
         <p data-channel={release.channel}>
@@ -81,21 +105,25 @@
         </time>
       </header>
       <details>
-        <summary> Summary </summary>
-        {@html release.summary}
+        <summary><h3>Summary</h3></summary>
+        <div class="release-summary">{@html release.summary}</div>
       </details>
-      <details>
-        <summary>Runtime Changes</summary>
-        {#each release.runtime.notes.groups as group}
-          <NoteGroup {group} />
-        {/each}
-      </details>
-      <details>
-        <summary>IDE Changes</summary>
-        {#each release.ide.notes.groups as group}
-          <NoteGroup {group} />
-        {/each}
-      </details>
+      {#if release.runtime.notes.groups.length}
+        <details>
+          <summary><h3>Runtime Changes</h3></summary>
+          {#each release.runtime.notes.groups as group}
+            <NoteGroup {group} />
+          {/each}
+        </details>
+      {/if}
+      {#if release.ide.notes.groups.length}
+        <details>
+          <summary><h3>IDE Changes</h3></summary>
+          {#each release.ide.notes.groups as group}
+            <NoteGroup {group} />
+          {/each}
+        </details>
+      {/if}
     </article>
   {/each}
 </section>
@@ -121,18 +149,15 @@
     --channel-color: var(--color-unstable);
   }
 
-  article header {
-    display: flex;
-    flex-direction: row;
-    gap: 0.5em;
-    align-items: center;
-  }
+  /* CHANNEL PILLS */
 
-  article header h2 {
+  article header h2,
+  form label[data-channel] {
     color: var(--channel-color);
   }
 
-  article header p {
+  article header p,
+  form label[data-channel] {
     background-color: var(--channel-color);
     color: var(--color-background);
     padding: 0em 0.5em;
@@ -141,20 +166,78 @@
     font-size: 0.75em;
   }
 
+  /* FORM */
+  input:where([type='search'], [type='text']) {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    border: 0.1em solid var(--color-text-muted);
+    border-radius: 0.75em;
+    padding: 0 0.5em;
+  }
+  input:where([type='search'], [type='text']):where(:focus, :focus-visible) {
+    outline: 0.1em solid var(--color-text);
+    /*
+      Change the border to the background color so
+      it isn't visible but still takes up space.
+    */
+    border-color: var(--color-background);
+  }
+  label {
+    user-select: none;
+  }
+  input[type='checkbox'] {
+    cursor: pointer;
+  }
+  label:has(input[type='checkbox']) {
+    cursor: pointer;
+  }
+  form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1em;
+  }
+  form fieldset {
+    display: flex;
+    flex-direction: row;
+    gap: 0.25em;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+  label:has(input[type='checkbox']) {
+    display: inline-grid;
+    grid-template-columns: 1em auto;
+    gap: 0.25em;
+  }
+
+  /* RELEASE */
+  article header {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+    align-items: center;
+  }
+
   article header time {
     color: var(--color-text-muted);
   }
 
-  details {
+  details summary {
+    cursor: pointer;
+    user-select: none;
+  }
+  details summary h3 {
+    display: inline-block;
+  }
+  details .release-summary {
     display: flex;
     flex-direction: column;
     gap: 1em;
   }
 
-  summary {
-    cursor: pointer;
-    user-select: none;
-  }
   /* https://tailwindcss.com/docs/screen-readers */
   .sr-only {
     position: absolute;

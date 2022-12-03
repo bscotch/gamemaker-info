@@ -29,10 +29,11 @@
 2. ✅ Display all Releases
 3. ✅ Add toggleable filters for each channel
 4. ✅ Add search filter
-  1. Highlight matches in the results
-5. Add some basic styling, with CSS variables to expose customization
-6. Add "highlighted" option for separately styling a particular release
-7. Add "highlight" button to non-highlighted releases
+5. ✅ Add some basic styling, with CSS variables to expose customization
+6. Figure out how to style inner HTML
+7. Highlight search result ranges
+8. Add "highlighted" option for separately styling a particular release
+9. Add "highlight" button to non-highlighted releases
   - Add option to customize that text
   - Emit an event when that button is clicked, and changed the highlighted value to match
 1. Figure out how to [get it packaged](https://kit.svelte.dev/docs/packaging) for use in Stitch Desktop
