@@ -1,12 +1,13 @@
 <script lang="ts">
   import type { GameMakerReleaseWithNotes } from '@bscotch/gamemaker-releases';
   import type Fuse from 'fuse.js';
+  import type { FuseResult } from 'fuse.js';
   import { channels, type Channel } from './constants.js';
   import { createSearchIndex, debounce, type SearchOptions } from './utils.js';
 
   export let showChannels: Channel[] = ['lts', 'stable'];
   export let releases: GameMakerReleaseWithNotes[];
-  export let showingReleases: GameMakerReleaseWithNotes[] = [];
+  export let filteredReleases: FuseResult<GameMakerReleaseWithNotes>[] = [];
   let searchQuery = '';
   let searchIndex: Fuse<GameMakerReleaseWithNotes> | undefined;
   let searchOptions: SearchOptions = {
@@ -14,10 +15,11 @@
   };
 
   function updateSearchIndex() {
-    showingReleases = releases.filter((release) =>
+    const filtered = releases.filter((release) =>
       showChannels.includes(release.channel),
     );
-    searchIndex = createSearchIndex(showingReleases);
+    filteredReleases = filtered.map((f) => ({ item: f, refIndex: 0 }));
+    searchIndex = createSearchIndex(filtered, searchOptions);
     if (searchQuery) {
       filterBySearch();
     }
@@ -26,14 +28,18 @@
   function filterBySearch() {
     if (searchQuery) {
       const index =
-        searchIndex || createSearchIndex(showingReleases, searchOptions);
+        searchIndex ||
+        createSearchIndex(
+          filteredReleases.map((f) => f.item),
+          searchOptions,
+        );
       const searchResults = index.search(searchQuery);
       console.log(searchResults);
-      showingReleases = searchResults.map((result) => result.item);
+      filteredReleases = searchResults;
     } else {
       updateSearchIndex();
     }
-    return showingReleases;
+    return filteredReleases;
   }
 
   const debouncedSearch = debounce(filterBySearch, 200);

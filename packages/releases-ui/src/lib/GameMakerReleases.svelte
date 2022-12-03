@@ -1,20 +1,23 @@
 <script lang="ts">
   import type { GameMakerReleaseWithNotes } from '@bscotch/gamemaker-releases';
+  import type { FuseResult } from 'fuse.js';
   import type { Channel } from './constants.js';
   import Filter from './Filter.svelte';
+  import Highlight from './Highlight.svelte';
   import NoteGroup from './NoteGroup.svelte';
   import { toDateIso, toDateLocal } from './utils.js';
 
   export let showChannels: Channel[] = ['lts', 'stable'];
   export let releases: GameMakerReleaseWithNotes[];
 
-  let showingReleases: GameMakerReleaseWithNotes[] = [];
+  let filteredReleases: FuseResult<GameMakerReleaseWithNotes>[] = [];
 </script>
 
 <section id="gamemaker-releases-component">
-  <Filter bind:showChannels bind:releases bind:showingReleases />
+  <Filter bind:showChannels bind:releases bind:filteredReleases />
 
-  {#each showingReleases as release}
+  {#each filteredReleases as releaseResult}
+    {@const release = releaseResult.item}
     <article data-version={release.ide.version} data-channel={release.channel}>
       <header id={`release-${release.ide.version}`}>
         <h2>{release.ide.version}</h2>
@@ -29,7 +32,13 @@
       </header>
       <details>
         <summary><h3>Summary</h3></summary>
-        <section class="release-summary">{@html release.summary}</section>
+        <section class="release-summary">
+          <Highlight
+            text={release.summary}
+            indices={releaseResult.matches?.find((r) => r.key === 'summary')
+              ?.indices}
+          />
+        </section>
       </details>
       {#if release.runtime.notes.groups.length}
         <details>

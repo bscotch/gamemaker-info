@@ -47,6 +47,7 @@ export function createSearchIndex(
     includeMatches: true,
     minMatchCharLength: 3,
     isCaseSensitive: options?.caseSensitive ?? false,
-    useExtendedSearch: true,
+    includeScore: true,
+    // useExtendedSearch: true,
   });
 }
