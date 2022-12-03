@@ -9,7 +9,6 @@ export async function loadReleasesSummary(
   url = 'https://github.com/bscotch/gamemaker-info/releases/latest/download/releases-summary.json',
 ): Promise<GameMakerReleaseWithNotes[]> {
   const response = await fetch(url);
-  console.log(response);
   const json = await response.json();
   return json;
 }
