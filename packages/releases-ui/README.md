@@ -30,7 +30,7 @@
 3. ✅ Add toggleable filters for each channel
 4. ✅ Add search filter
 5. ✅ Add some basic styling, with CSS variables to expose customization
-6. Figure out how to style inner HTML
+6. ✅ Figure out how to style inner HTML
 7. Highlight search result ranges
 8. Add "highlighted" option for separately styling a particular release
 9. Add "highlight" button to non-highlighted releases

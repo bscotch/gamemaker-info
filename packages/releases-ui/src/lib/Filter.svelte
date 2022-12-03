@@ -95,12 +95,12 @@
   [data-channel='unstable'] {
     --channel-color: var(--color-unstable);
   }
-  form label[data-channel] {
-    color: var(--channel-color);
-  }
-  form label[data-channel] {
-    background-color: var(--channel-color);
+
+  form label {
     color: var(--color-background);
+  }
+  form label {
+    background-color: var(--channel-color, var(--color-text));
     padding: 0em 0.5em;
     border-radius: 0.75em;
     font-weight: bold;
@@ -136,7 +136,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
-    gap: 1em;
+    gap: 0.5em;
   }
   form fieldset {
     display: flex;

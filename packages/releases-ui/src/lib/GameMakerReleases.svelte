@@ -29,22 +29,26 @@
       </header>
       <details>
         <summary><h3>Summary</h3></summary>
-        <div class="release-summary">{@html release.summary}</div>
+        <section class="release-summary">{@html release.summary}</section>
       </details>
       {#if release.runtime.notes.groups.length}
         <details>
           <summary><h3>Runtime Changes</h3></summary>
-          {#each release.runtime.notes.groups as group}
-            <NoteGroup {group} />
-          {/each}
+          <section>
+            {#each release.runtime.notes.groups as group}
+              <NoteGroup {group} />
+            {/each}
+          </section>
         </details>
       {/if}
       {#if release.ide.notes.groups.length}
         <details>
           <summary><h3>IDE Changes</h3></summary>
-          {#each release.ide.notes.groups as group}
-            <NoteGroup {group} />
-          {/each}
+          <section>
+            {#each release.ide.notes.groups as group}
+              <NoteGroup {group} />
+            {/each}
+          </section>
         </details>
       {/if}
     </article>
@@ -52,7 +56,7 @@
 </section>
 
 <style>
-  section {
+  #gamemaker-releases-component {
     color: var(--color-text);
     background-color: var(--color-background);
     display: flex;
@@ -101,12 +105,18 @@
 
   details summary {
     cursor: pointer;
-    user-select: none;
+    font-size: 1em;
   }
   details summary h3 {
-    display: inline-block;
+    font-size: 1em;
+    user-select: none;
+    display: inline;
   }
-  details .release-summary {
+  details > section {
+    padding-left: 1em;
+    padding-block: 0.25em 0.75em;
+  }
+  details > section.release-summary {
     display: flex;
     flex-direction: column;
     gap: 1em;

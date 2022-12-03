@@ -7,12 +7,40 @@
   export let group: NoteGroup;
 </script>
 
-{#if group.title}
-  <h3>{group.title}</h3>
-{/if}
+<details>
+  <summary>
+    <h4>{group.title}</h4>
+  </summary>
+  <ul>
+    {#each group.changes as change}
+      <li>{@html change}</li>
+    {/each}
+  </ul>
+</details>
 
-<ul>
-  {#each group.changes as change}
-    <li>{change}</li>
-  {/each}
-</ul>
+<style>
+  summary {
+    color: var(--color-text-muted);
+  }
+  h4 {
+    font-size: 1em;
+    margin: 0;
+    padding: 0;
+    font-style: italic;
+    display: inline;
+    user-select: none;
+    cursor: pointer;
+  }
+  ul {
+    /* list-style: none; */
+    /* margin: 0; */
+    /* padding: 0; */
+    padding-left: 1.75em;
+  }
+  li {
+    padding-block: 0.25em;
+  }
+  li::marker {
+    color: var(--color-text-muted);
+  }
+</style>
