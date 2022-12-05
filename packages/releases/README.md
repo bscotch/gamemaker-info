@@ -2,7 +2,9 @@
 
 [GameMaker](https://gamemaker.io/) releases new builds fairly frequently across several release channels (e.g. beta, stable, and LTS). Each release includes two separate artifacts: an IDE installer and a Runtime. Release notes are listed separately for each artifact type and release channel.
 
-This package centralizes all of the official GameMaker information (for Windows versions) into a single structured document.
+This package centralizes all of the official GameMaker information (for Windows versions) into a single structured document. It is used by [Butterscotch Shenanigans](https://www.bscotch.net) to keep an up-to-date, centralized history of releases. These are uploaded [as GitHub releases](https://github.com/bscotch/gamemaker-info/releases).
+
+Latest releases document: https://github.com/bscotch/gamemaker-info/releases/latest/download/releases-summary.json
 
 ## Requirements
 
@@ -18,7 +20,9 @@ This package centralizes all of the official GameMaker information (for Windows 
 import { listReleasesWithNotes } from '@bscotch/gamemaker-releases';
 
 // Get info for all releases, including IDE and Runtime, across
-// all channels, with release notes.
+// all channels, with release notes. The first run may take a while,
+// since there are many files that need to be fetched. These are
+// cached for future runs, however.
 const releases = await listReleasesWithNotes();
 ```
 
