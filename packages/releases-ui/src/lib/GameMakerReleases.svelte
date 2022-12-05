@@ -33,6 +33,8 @@
    * the "selected" event is fired.
    *
    * Optionally specify the text to display on the button.
+   *
+   * (If set to a null-string, the button will not be shown.)
    */
   export let selectButtonText = 'select';
 
@@ -77,7 +79,7 @@
           <span class="sr-only">Channel:</span>
           {release.channel}
         </p> -->
-        {#if !isSelected}
+        {#if !isSelected && selectButtonText}
           <button
             on:click={() =>
               dispatch('choose', {
