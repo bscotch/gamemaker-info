@@ -1,6 +1,6 @@
 {
   "name": "@bscotch/gamemaker-releases-ui",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "An unofficial Svelte UI for displaying GameMaker release change logs.",
   "keywords": [
     "gamemaker",
@@ -43,9 +43,10 @@
     "dev": "svelte-kit sync && vite dev",
     "prepublishOnly": "yarn build"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@bscotch/gamemaker-releases": "workspace:*"
+  },
   "devDependencies": {
-    "@bscotch/gamemaker-releases": "workspace:*",
     "@sveltejs/adapter-auto": "next",
     "@sveltejs/kit": "next",
     "@sveltejs/package": "next",
@@ -58,5 +59,12 @@
   "peerDependencies": {},
   "publishConfig": {
     "access": "public"
+  },
+  "trebuchet": {
+    "keep": {
+      "dependencies": [
+        "@bscotch/gamemaker-releases"
+      ]
+    }
   }
 }
