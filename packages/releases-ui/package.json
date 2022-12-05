@@ -50,13 +50,15 @@
     "@sveltejs/adapter-auto": "next",
     "@sveltejs/kit": "next",
     "@sveltejs/package": "next",
-    "svelte": "*",
+    "svelte": "next",
     "svelte-check": "^2.10.1",
     "svelte-preprocess": "^4.10.7",
     "typescript": "^4.9.3",
     "vite": "^3.2.5"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "svelte:": "*"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -64,6 +66,9 @@
     "keep": {
       "dependencies": [
         "@bscotch/gamemaker-releases"
+      ],
+      "peerDependencies": [
+        "svelte"
       ]
     }
   }
