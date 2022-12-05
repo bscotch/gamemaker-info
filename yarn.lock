@@ -59,8 +59,8 @@ __metadata:
     "@types/mocha": ^10.0.1
     "@types/rimraf": ^3
     chai: ^4.3.7
+    entities: ^4.4.0
     fast-xml-parser: ^4.0.12
-    html-entities: ^2.3.3
     mocha: ^10.1.0
     node-fetch: ^3.3.0
     rimraf: ^3.0.2
@@ -1505,6 +1505,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"entities@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "entities@npm:4.4.0"
+  checksum: 84d250329f4b56b40fa93ed067b194db21e8815e4eb9b59f43a086f0ecd342814f6bc483de8a77da5d64e0f626033192b1b4f1792232a7ea6b970ebe0f3187c2
+  languageName: node
+  linkType: hard
+
 "env-paths@npm:^2.2.0":
   version: 2.2.1
   resolution: "env-paths@npm:2.2.1"
@@ -2447,13 +2454,6 @@ __metadata:
   bin:
     he: bin/he
   checksum: 3d4d6babccccd79c5c5a3f929a68af33360d6445587d628087f39a965079d84f18ce9c3d3f917ee1e3978916fc833bb8b29377c3b403f919426f91bc6965e7a7
-  languageName: node
-  linkType: hard
-
-"html-entities@npm:^2.3.3":
-  version: 2.3.3
-  resolution: "html-entities@npm:2.3.3"
-  checksum: 92521501da8aa5f66fee27f0f022d6e9ceae62667dae93aa6a2f636afa71ad530b7fb24a18d4d6c124c9885970cac5f8a52dbf1731741161002816ae43f98196
   languageName: node
   linkType: hard
 
