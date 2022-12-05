@@ -7,6 +7,11 @@ const config = {
   kit: {
     adapter: adapter(),
   },
+  package: {
+    exports(filePath) {
+      return ['index.ts', 'GameMakerReleases.svelte'].includes(filePath);
+    },
+  },
 };
 
 export default config;
