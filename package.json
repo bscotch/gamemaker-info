@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@bscotch/pathy": "^2.5.1",
+    "@bscotch/trebuchet": "^2.7.2",
     "@bscotch/utility": "^6.7.0",
     "@types/chai": "^4.3.4",
     "@types/mocha": "^10.0.1",
