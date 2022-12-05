@@ -18,10 +18,11 @@
     "ui",
     "svelte"
   ],
+  "homepage": "https://github.com/bscotch/gamemaker-info/blob/develop/packages/releases-ui/README.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/bscotch/gamemaker-info.git",
-    "directory": "packages/releases"
+    "directory": "packages/releases-ui"
   },
   "license": "MIT",
   "author": "Butterscotch Shenanigans",
@@ -31,7 +32,7 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "dev": "svelte-kit sync && vite dev",
-    "prepublishOnly": "echo 'Did you mean to publish `./package/`, instead of `./`?' && exit 1"
+    "prepublishOnly": "yarn build"
   },
   "dependencies": {
     "@bscotch/gamemaker-releases": "workspace:*",
@@ -48,5 +49,11 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./GameMakerReleases.svelte": "./package/GameMakerReleases.svelte",
+    ".": "./package/index.js"
+  },
+  "svelte": "./package/index.js"
 }
