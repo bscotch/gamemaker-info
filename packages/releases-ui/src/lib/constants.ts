@@ -1,4 +1,4 @@
-import type { GameMakerReleaseWithNotes } from '@bscotch/gamemaker-releases';
+import type { GameMakerReleaseWithNotes } from '@bscotch/gamemaker-releases/browser';
 
 export type Channel = typeof channels[number];
 export const channels = ['lts', 'stable', 'beta', 'unstable'] as const;

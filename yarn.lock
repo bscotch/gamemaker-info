@@ -54,20 +54,21 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bscotch/gamemaker-releases-ui@workspace:packages/releases-ui"
   dependencies:
-    "@bscotch/gamemaker-releases": "workspace:^"
+    "@bscotch/gamemaker-releases": "workspace:*"
     "@sveltejs/adapter-auto": next
     "@sveltejs/kit": next
     "@sveltejs/package": next
     svelte: ^3.53.1
     svelte-check: ^2.10.1
     svelte-preprocess: ^4.10.7
-    tslib: ^2.4.1
     typescript: ^4.9.3
     vite: ^3.2.5
+  peerDependencies:
+    svelte: "*"
   languageName: unknown
   linkType: soft
 
-"@bscotch/gamemaker-releases@workspace:^, @bscotch/gamemaker-releases@workspace:packages/releases":
+"@bscotch/gamemaker-releases@workspace:*, @bscotch/gamemaker-releases@workspace:packages/releases":
   version: 0.0.0-use.local
   resolution: "@bscotch/gamemaker-releases@workspace:packages/releases"
   dependencies:
@@ -82,6 +83,7 @@ __metadata:
     mocha: ^10.1.0
     node-fetch: ^3.3.0
     rimraf: ^3.0.2
+    tslib: ^2.4.1
     typescript: ^4.9.3
     zod: ^3.19.1
   languageName: unknown

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { GameMakerReleaseWithNotes } from '@bscotch/gamemaker-releases';
+  import type { GameMakerReleaseWithNotes } from '@bscotch/gamemaker-releases/browser';
   import { createEventDispatcher, onMount, tick } from 'svelte';
   import {
     ideAnchorId,
