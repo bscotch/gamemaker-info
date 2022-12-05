@@ -1,75 +1,23 @@
 <script lang="ts">
   import type { GameMakerReleaseWithNotes } from '@bscotch/gamemaker-releases';
-  import type Fuse from 'fuse.js';
-  import type { FuseResult } from 'fuse.js';
   import { channels, type Channel } from './constants.js';
-  import { createSearchIndex, debounce, type SearchOptions } from './utils.js';
 
   export let showChannels: Channel[] = ['lts', 'stable'];
   export let releases: GameMakerReleaseWithNotes[];
-  export let filteredReleases: FuseResult<GameMakerReleaseWithNotes>[] = [];
-  let searchQuery = '';
-  let searchIndex: Fuse<GameMakerReleaseWithNotes> | undefined;
-  let searchOptions: SearchOptions = {
-    caseSensitive: false,
-  };
+  export let filteredReleases: GameMakerReleaseWithNotes[] = [];
 
-  function updateSearchIndex() {
-    const filtered = releases.filter((release) =>
+  function updateFilteredReleases() {
+    filteredReleases = releases.filter((release) =>
       showChannels.includes(release.channel),
     );
-    filteredReleases = filtered.map((f) => ({ item: f, refIndex: 0 }));
-    searchIndex = createSearchIndex(filtered, searchOptions);
-    if (searchQuery) {
-      filterBySearch();
-    }
   }
 
-  function filterBySearch() {
-    if (searchQuery) {
-      const index =
-        searchIndex ||
-        createSearchIndex(
-          filteredReleases.map((f) => f.item),
-          searchOptions,
-        );
-      const searchResults = index.search(searchQuery);
-      console.log(searchResults);
-      filteredReleases = searchResults;
-    } else {
-      updateSearchIndex();
-    }
-    return filteredReleases;
-  }
-
-  const debouncedSearch = debounce(filterBySearch, 200);
-
-  updateSearchIndex();
+  updateFilteredReleases();
 </script>
 
 <form>
   <h2 class="sr-only">Filter display GameMaker Releases</h2>
-  <input
-    aria-label="Display releases that match search terms"
-    type="search"
-    placeholder="Search"
-    bind:value={searchQuery}
-    on:keyup={() => debouncedSearch()}
-    on:change={() => debouncedSearch()}
-  />
-  <fieldset>
-    <legend class="sr-only"> Search options </legend>
-    <label>
-      <input
-        type="checkbox"
-        bind:value={searchOptions.caseSensitive}
-        on:change={() => {
-          updateSearchIndex();
-        }}
-      />
-      match case
-    </label>
-  </fieldset>
+
   <fieldset>
     <legend class="sr-only"> Select which channels to display </legend>
     {#each channels as channel}
@@ -79,7 +27,7 @@
           bind:group={showChannels}
           value={channel}
           on:change={() => {
-            updateSearchIndex();
+            updateFilteredReleases();
           }}
         />
         {channel}

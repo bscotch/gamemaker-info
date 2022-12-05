@@ -31,7 +31,7 @@
 4. ✅ Add search filter
 5. ✅ Add some basic styling, with CSS variables to expose customization
 6. ✅ Figure out how to style inner HTML
-7. Highlight search result ranges
+7. ✅ Abandon custom search -- doesn't add enough over regular Ctrl+F and is complex to implement
 8. Add "highlighted" option for separately styling a particular release
 9. Add "highlight" button to non-highlighted releases
   - Add option to customize that text

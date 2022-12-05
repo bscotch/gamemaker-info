@@ -1,6 +1,3 @@
-import type { GameMakerReleaseWithNotes } from '@bscotch/gamemaker-releases';
-import Fuse from 'fuse.js';
-
 export function debounce(fn: Function, delay: number) {
   let timeoutId: number;
   return function (this: any, ...args: any[]) {
@@ -15,39 +12,4 @@ export function toDateIso(date: string | Date) {
 
 export function toDateLocal(date: string | Date) {
   return new Date(date).toLocaleDateString();
-}
-
-export interface SearchOptions {
-  caseSensitive?: boolean;
-}
-
-export function createSearchIndex(
-  withinReleases: GameMakerReleaseWithNotes[],
-  options?: SearchOptions,
-) {
-  return new Fuse(withinReleases, {
-    keys: [
-      {
-        name: 'ide.notes.groups.changes',
-        weight: 2,
-      },
-      {
-        name: 'ide.notes.groups.title',
-        weight: 0.5,
-      },
-      {
-        name: 'version',
-        weight: 1,
-      },
-      {
-        name: 'summary',
-        weight: 0.5,
-      },
-    ],
-    includeMatches: true,
-    minMatchCharLength: 3,
-    isCaseSensitive: options?.caseSensitive ?? false,
-    includeScore: true,
-    // useExtendedSearch: true,
-  });
 }
