@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { decode } from 'html-entities';
 import { htmlString } from './utils.js';
 
 export interface RssFeedEntry {
@@ -76,12 +75,9 @@ export const gameMakerArtifactWithNotesSchema = gameMakerArtifactSchema.extend({
 const gameMakerReleaseBaseSchema = z.object({
   channel: channelSchema,
   publishedAt: z.string().describe('Date of release for the IDE in this pair'),
-  summary: z
-    .string()
-    .transform((s) => {
-      return s ? decode(s).replace(/\btarget=[^\s>]+/, '') : s;
-    })
-    .describe('Summary of the release, from the RSS feed for the IDE'),
+  summary: htmlString().describe(
+    'Summary of the release, from the RSS feed for the IDE',
+  ),
 });
 
 export type GameMakerReleaseWithNotes = z.infer<

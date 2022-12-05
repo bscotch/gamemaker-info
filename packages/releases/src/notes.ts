@@ -8,7 +8,8 @@ import {
   rawReleaseNotesCacheSchema,
   rawReleaseNoteSchema,
 } from './feeds.types.js';
-import { countNonUnique, fetchJson, findMax } from './utils.js';
+import { fetchJson } from './fetch.js';
+import { countNonUnique, findMax } from './utils.js';
 
 export async function listReleaseNotes(
   releases: GameMakerRelease[],

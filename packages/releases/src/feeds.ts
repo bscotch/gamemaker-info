@@ -1,11 +1,10 @@
 import { Pathy } from '@bscotch/pathy';
-import { assert, literal } from '@bscotch/utility/browser';
+import { assert } from '@bscotch/utility/browser';
 import { z } from 'zod';
 import { defaultNotesCachePath } from './constants.js';
 import { downloadRssFeed, findPairedRuntime } from './feeds.lib.js';
 import {
   ArtifactType,
-  Channel,
   channels,
   GameMakerArtifact,
   gameMakerArtifactSchema,
@@ -15,26 +14,7 @@ import {
   gameMakerReleaseWithNotesSchema,
 } from './feeds.types.js';
 import { listReleaseNotes } from './notes.js';
-
-export function ideFeedUrls() {
-  const prefix = `https://gms.yoyogames.com/update-win`;
-  return literal({
-    lts: `${prefix}-LTS.rss`,
-    stable: `${prefix}.rss`,
-    beta: `${prefix}-NuBeta.rss`,
-    unstable: `${prefix}-NuBeta-I.rss`,
-  }) satisfies { [c in Channel]: string };
-}
-
-export function runtimeFeedUrls() {
-  const prefix = `https://gms.yoyogames.com/Zeus-Runtime`;
-  return literal({
-    lts: `${prefix}-LTS.rss`,
-    stable: `${prefix}.rss`,
-    beta: `${prefix}-NuBeta.rss`,
-    unstable: `${prefix}-NuBeta-I.rss`,
-  }) satisfies { [c in Channel]: string };
-}
+import { ideFeedUrls, runtimeFeedUrls } from './urls.js';
 
 export async function listReleasesWithNotes(
   releases?: GameMakerRelease[],

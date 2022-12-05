@@ -4,7 +4,7 @@ import {
   rssFeedSchema,
   type GameMakerArtifact,
 } from './feeds.types.js';
-import { fetchXml } from './utils.js';
+import { fetchXml } from './fetch.js';
 
 function daysApart(a: string, b: string) {
   return dateDifferenceDays(new Date(a), new Date(b));

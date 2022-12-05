@@ -1,4 +1,7 @@
-export { listReleases, listReleasesWithNotes } from './feeds.js';
+/**
+ * @file Browser-compatible exports
+ */
+
 export { ideFeedUrls, runtimeFeedUrls } from './urls.js';
 export { gameMakerReleaseWithNotesSchema } from './feeds.types.js';
 export type {

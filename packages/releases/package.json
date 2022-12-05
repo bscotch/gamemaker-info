@@ -31,6 +31,10 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./browser": {
+      "import": "./dist/browser.js",
+      "types": "./dist/browser.d.ts"
     }
   },
   "scripts": {
@@ -46,8 +50,8 @@
   "dependencies": {
     "@bscotch/pathy": "^2.5.1",
     "@bscotch/utility": "^6.7.0",
+    "entities": "^4.4.0",
     "fast-xml-parser": "^4.0.12",
-    "html-entities": "^2.3.3",
     "node-fetch": "^3.3.0",
     "zod": "^3.19.1"
   },
