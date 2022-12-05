@@ -1,5 +1,4 @@
 import GameMakerReleases from './GameMakerReleases.svelte';
-import { loadReleasesSummary } from './loadReleasesSummary.js';
 export {
   channels,
   ideAnchorId,
@@ -7,4 +6,5 @@ export {
   runtimeAnchorId,
   type Channel,
 } from './constants.js';
-export { GameMakerReleases, loadReleasesSummary };
+export { fetchReleasesSummary, releasesUrl } from './fetchReleasesSummary.js';
+export { GameMakerReleases };

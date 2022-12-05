@@ -1,8 +1,8 @@
-import { loadReleasesSummary } from '$lib/loadReleasesSummary.js';
+import { fetchReleasesSummary } from '$lib/fetchReleasesSummary.js';
 import type { PageServerLoad } from './$types.js';
 
 export const load: PageServerLoad = async () => {
-  const releases = await loadReleasesSummary();
+  const releases = await fetchReleasesSummary();
   return {
     releases,
   };
