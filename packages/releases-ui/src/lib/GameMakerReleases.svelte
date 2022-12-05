@@ -13,7 +13,7 @@
 
   // Dispatch an event called 'selected' when a release is selected.
   const dispatch = createEventDispatcher<{
-    selected: { release: string; ideVersion: string; runtimeVersion: string };
+    choose: { release: string; ideVersion: string; runtimeVersion: string };
   }>();
 
   export let showChannels: Channel[] = ['lts', 'stable', 'beta'];
@@ -80,7 +80,7 @@
         {#if !isSelected}
           <button
             on:click={() =>
-              dispatch('selected', {
+              dispatch('choose', {
                 release: release.ide.version,
                 runtimeVersion: release.runtime.version,
                 ideVersion: release.ide.version,
