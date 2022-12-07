@@ -96,7 +96,7 @@ function cleanNotes(cachedNotes: RawReleaseNotesCache) {
   return notesByUrl;
 }
 
-function cleanNote(note: {
+export function cleanNote(note: {
   type?: ArtifactType;
   version: string;
   url: string;
@@ -130,7 +130,7 @@ function relativeToVersion(title: string | null): string | null {
 
 function parseBody(html: string) {
   // Split on h3 elements, and then pull out the lists within each
-  const parts = html.split(/<h3>\s*(.+?)\s*<\/h3>\s*<ul>\s*(.+?)\s*<\/ul>/g);
+  const parts = html.split(/<h3>\s*(.+?)\s*<\/h3>\s*<ul>\s*(.+?)\s*<\/ul>/gs);
   const changes: { title: string; changes: string[] }[] = [];
   for (let groupIdx = 0; groupIdx < parts.length - 2; groupIdx += 3) {
     const [title, list] = [parts[groupIdx + 1], parts[groupIdx + 2]];
@@ -140,7 +140,7 @@ function parseBody(html: string) {
 }
 
 function parseList(htmlList: string) {
-  const parts = htmlList.split(/<li>\s*(.+?)\s*<\/li>/g);
+  const parts = htmlList.split(/<li>\s*(.+?)\s*<\/li>/gs);
   const changes: string[] = [];
   for (let groupIdx = 0; groupIdx < parts.length - 1; groupIdx += 2) {
     const change = parts[groupIdx + 1];
@@ -156,7 +156,7 @@ function parseHeader(html: string): { title: string | null; body: string } {
   // If there is an h2 with the word "since" in it (otherwise the first h2), treat that
   // one as the one describing this version and remove everything above and all headers
   // below it.
-  const h2s = html.match(/<h2>\s*(.+?)\s*<\/h2>/g);
+  const h2s = html.match(/<h2>\s*(.+?)\s*<\/h2>/gs);
   if (!h2s?.length) {
     return { title: null, body: html };
   }
