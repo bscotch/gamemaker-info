@@ -25,7 +25,7 @@ import { listReleasesWithNotes } from '@bscotch/gamemaker-releases';
 // cached for future runs, however.
 const releases = await listReleasesWithNotes();
 ```
- 
+
 ## Background Info
 
 ### Artifacts
