@@ -1,2 +1,6 @@
 export * from './browser.js';
-export { listReleases, listReleasesWithNotes } from './feeds.js';
+export {
+  computeReleasesSummary,
+  computeReleasesSummaryWithNotes,
+} from './feeds.js';
+export { fetchReleasesSummaryWithNotes } from './releases.js';

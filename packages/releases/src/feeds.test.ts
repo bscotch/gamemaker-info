@@ -1,7 +1,10 @@
 import { pathy } from '@bscotch/pathy';
 import { expect } from 'chai';
 import { cleanNote } from './notes.js';
-import { listReleases, listReleasesWithNotes } from './feeds.js';
+import {
+  computeReleasesSummary,
+  computeReleasesSummaryWithNotes,
+} from './feeds.js';
 import { rawReleaseNotesCacheSchema } from './feeds.types.js';
 
 const notesCache = pathy('release-notes-cache.json').withValidator(
@@ -31,8 +34,11 @@ describe('Release Feeds', function () {
   });
 
   it('can create a centralized GameMaker Releases database', async function () {
-    const releases = await listReleases();
-    const withNotes = await listReleasesWithNotes(releases, notesCache);
+    const releases = await computeReleasesSummary();
+    const withNotes = await computeReleasesSummaryWithNotes(
+      releases,
+      notesCache,
+    );
     await tmpSummaryPath.write(withNotes);
     expect(withNotes.length).to.be.greaterThan(0);
     expect(withNotes.every((r) => r.channel)).to.exist;

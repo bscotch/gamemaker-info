@@ -16,11 +16,11 @@ import {
 import { listReleaseNotes } from './notes.js';
 import { ideFeedUrls, runtimeFeedUrls } from './urls.js';
 
-export async function listReleasesWithNotes(
+export async function computeReleasesSummaryWithNotes(
   releases?: GameMakerRelease[],
   cache: Pathy | string = defaultNotesCachePath,
 ): Promise<GameMakerReleaseWithNotes[]> {
-  releases ||= await listReleases();
+  releases ||= await computeReleasesSummary();
   const notes = await listReleaseNotes(releases, cache);
   const withNotes: GameMakerReleaseWithNotes[] = [];
   for (const release of releases) {
@@ -48,7 +48,7 @@ export async function listReleasesWithNotes(
   return z.array(gameMakerReleaseWithNotesSchema).parse(withNotes);
 }
 
-export async function listReleases(): Promise<GameMakerRelease[]> {
+export async function computeReleasesSummary(): Promise<GameMakerRelease[]> {
   const ideArtifacts = await listArtifacts('ide');
   const runtimeArtifacts = await listArtifacts('runtime');
   const releases: GameMakerRelease[] = [];

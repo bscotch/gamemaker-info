@@ -17,13 +17,19 @@ Latest releases document: https://github.com/bscotch/gamemaker-info/releases/lat
 ## Usage
 
 ```ts
-import { listReleasesWithNotes } from '@bscotch/gamemaker-releases';
+import {
+  fetchReleasesSummaryWithNotes,
+  computeReleasesSummaryWithNotes
+} from '@bscotch/gamemaker-releases';
 
-// Get info for all releases, including IDE and Runtime, across
-// all channels, with release notes. The first run may take a while,
-// since there are many files that need to be fetched. These are
-// cached for future runs, however.
-const releases = await listReleasesWithNotes();
+// 🚀 Fetch the latest already-computed summary
+// of all GameMaker releases:
+const releases = await fetchReleasesSummaryWithNotes();
+
+// 🐌 Freshly compile the centralized release summary.
+// This can be useful if the pre-computed
+// summary is out of date.
+const releases = await computeReleasesSummaryWithNotes();
 ```
 
 ## Background Info
