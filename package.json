@@ -7,52 +7,40 @@
     "clean:artifacts": "rimraf -rf */*/dist */*/build **/.turbo **/*.tsbuildinfo **/package-lock.json",
     "clean:deps": "rimraf -rf node_modules **/node_modules",
     "fix:deps": "syncpack fix-mismatches && treb fix --allProjects --packageJson",
-    "postinstall": "husky install config/husky",
     "test": "turbo run test",
     "watch": "turbo run watch --parallel"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "~5.45.0",
-    "@typescript-eslint/parser": "~5.45.0",
-    "@typescript-eslint/utils": "^5.45.0",
-    "eslint": "^8.28.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-svelte": "2.13.1",
-    "eslint-plugin-vue": "^9.8.0",
-    "nano-staged": "^0.8.0",
-    "prettier": "^2.8.0",
-    "prettier-plugin-svelte": "^2.8.1",
-    "rimraf": "^3.0.2",
+    "@typescript-eslint/eslint-plugin": "~5.52.0",
+    "@typescript-eslint/parser": "~5.52.0",
+    "@typescript-eslint/utils": "^5.52.0",
+    "eslint": "^8.34.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-svelte": "2.18.0",
+    "eslint-plugin-vue": "^9.9.0",
+    "prettier": "^2.8.4",
+    "prettier-plugin-svelte": "^2.9.0",
+    "rimraf": "^4.1.2",
     "source-map-support": "^0.5.21",
-    "svelte": "3.53.1",
-    "tslib": "^2.4.1"
+    "svelte": "3.55.1",
+    "tslib": "^2.5.0"
   },
   "devDependencies": {
-    "@bscotch/pathy": "^2.5.1",
-    "@bscotch/trebuchet": "^2.7.2",
-    "@bscotch/utility": "^6.7.0",
+    "@bscotch/pathy": "^2.6.0",
+    "@bscotch/trebuchet": "^2.8.0",
+    "@bscotch/utility": "^6.8.0",
     "@types/chai": "^4.3.4",
     "@types/mocha": "^10.0.1",
-    "@types/node": "^18.11.9",
-    "dotenv-vault": "^1.16.3",
-    "husky": "^8.0.2",
-    "mocha": "^10.1.0",
-    "syncpack": "^8.4.10",
-    "turbo": "^1.6.3",
-    "typescript": "4.9.3"
+    "@types/node": "^18.13.0",
+    "dotenv-vault": "^1.18.0",
+    "mocha": "^10.2.0",
+    "syncpack": "^8.5.14",
+    "turbo": "^1.7.4",
+    "typescript": "4.9.5"
   },
   "engines": {
     "node": ">=16",
-    "pnpm": ">=7",
-    "yarn": ">=3"
-  },
-  "nano-staged": {
-    "*.{ts,js,mjs,cjs,mts,cts,json,yaml,yml}": [
-      "yarn exec prettier -w -u"
-    ],
-    "*.{ts,js,mjs,cjs,mts,cts}": [
-      "yarn exec eslint --fix --quiet"
-    ]
+    "pnpm": ">=7"
   },
   "syncpack": {
     "workspace": false,
@@ -78,7 +66,7 @@
     },
     "vscodeWorkspaceConfigPath": false
   },
-  "packageManager": "yarn@3.2.4",
+  "packageManager": "pnpm@7.26.3",
   "workspaces": [
     "packages/*"
   ]

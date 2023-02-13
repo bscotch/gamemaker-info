@@ -21,10 +21,10 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          cache: yarn
+          cache: pnpm
           node-version: 16
       - run: corepack enable
-      - run: yarn install
+      - run: pnpm install
 
       - name: Cache Notes
         id: cache-notes
@@ -41,7 +41,7 @@ jobs:
         run: echo "OLD_SUMMARY_CHECKSUM=${{hashFiles('packages/releases/releases-summary.json')}}" >> $GITHUB_ENV
 
       - name: Build
-        run: yarn turbo run build --only --filter=gamemaker-releases...
+        run: pnpm turbo run build --only --filter=gamemaker-releases...
       - name: Compute New Summary
         # This script adds the env var `LATEST_RELEASE`
         run: node scripts/update-releases-summary.mjs

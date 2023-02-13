@@ -26,9 +26,6 @@ spritely.log
 # dependencies
 node_modules
 package-lock.json
-.yarn/cache
-.yarn/install-state.gz
-
 
 # IDEs and editors
 /.idea
@@ -53,7 +50,6 @@ package-lock.json
 /coverage
 /libpeerconnection.log
 npm-debug.log
-yarn-error.log
 testem.log
 /typings
 *.tsbuildinfo

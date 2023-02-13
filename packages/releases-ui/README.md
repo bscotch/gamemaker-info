@@ -71,11 +71,11 @@ export const load: PageServerLoad = async () => {
 ### Development
 
 + Install [Node.js 16+](https://nodejs.org/)
-+ [Enable Corepack](https://nodejs.org/api/corepack.html#corepack) or [install yarn](https://yarnpkg.com/getting-started/install)
++ [Enable Corepack](https://nodejs.org/api/corepack.html#corepack) or manually install pnpm
 + Clone the repo containing this package
-+ In the repo root, run `yarn install`
++ In the repo root, run `pnpm install`
 + Run: `cd packages/releases-ui`
-+ Run: `yarn dev`
++ Run: `pnpm dev`
 + The console should provide a local URL to visit the demo page.
 
 ## TODO
