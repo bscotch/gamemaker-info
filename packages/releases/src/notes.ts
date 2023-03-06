@@ -25,7 +25,9 @@ export async function listReleaseNotes(
   const cacheData = await cachePath.read({ fallback: {} });
   for (const release of releases) {
     for (const type of ['ide', 'runtime'] as const) {
-      const url = release[type].notesUrl;
+      let url = release[type].notesUrl;
+      // URL can be malformed
+      url = url.replace(/^(.+\.cloudfront\.net)(release.*)$/, '$1/$2');
       if (cacheData[url]) {
         if (!cacheData[url].type) {
           cacheData[url].type = type;
@@ -92,7 +94,7 @@ function cleanNotes(cachedNotes: RawReleaseNotesCache) {
   const notesByUrl = cleanedNotes.reduce((acc, note) => {
     acc[note.url] = note;
     return acc;
-  }, {} as Record<string, typeof cleanedNotes[0]>);
+  }, {} as Record<string, (typeof cleanedNotes)[0]>);
   return notesByUrl;
 }
 

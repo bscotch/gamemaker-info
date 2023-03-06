@@ -1,5 +1,4 @@
 import { Pathy } from '@bscotch/pathy';
-import { assert } from '@bscotch/utility/browser';
 import { z } from 'zod';
 import { defaultNotesCachePath } from './constants.js';
 import { downloadRssFeed, findPairedRuntime } from './feeds.lib.js';
@@ -23,14 +22,15 @@ export async function computeReleasesSummaryWithNotes(
   releases ||= await computeReleasesSummary();
   const notes = await listReleaseNotes(releases, cache);
   const withNotes: GameMakerReleaseWithNotes[] = [];
+  const emptyChanges = {
+    changes: {
+      since: null,
+      groups: [],
+    },
+  };
   for (const release of releases) {
-    const ideNotes = notes[release.ide.notesUrl];
-    assert(ideNotes, `No notes found for IDE release ${release.ide.version}`);
-    const runtimeNotes = notes[release.runtime.notesUrl];
-    assert(
-      runtimeNotes,
-      `No notes found for IDE release ${release.runtime.version}`,
-    );
+    const ideNotes = notes[release.ide.notesUrl] || emptyChanges;
+    const runtimeNotes = notes[release.runtime.notesUrl] || emptyChanges;
     const ide = { ...release.ide, notes: ideNotes.changes };
     const runtime = { ...release.runtime, notes: runtimeNotes.changes };
     withNotes.push({
