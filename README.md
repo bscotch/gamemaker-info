@@ -1,3 +1,5 @@
+**⚠️ These packages have been migrated into the [Stitch monorepo](https://github.com/bscotch/stitch). This repo is archived for historical purposes.**
+
 # GameMaker Info
 
 Repository of knowledge and data about the [GameMaker engine](https://gamemaker.io/).
